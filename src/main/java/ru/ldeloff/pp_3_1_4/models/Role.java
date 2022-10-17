@@ -1,5 +1,6 @@
 package ru.ldeloff.pp_3_1_4.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
