@@ -106,15 +106,40 @@ function addInformationAdmin() {
         });
 }
 
+async function addUser(addUserForm) {
+    var user = getUserFromForm(addUserForm);
+    var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+    var myMail = user.email;
+    var valid = re.test(myMail);
+    if (valid) {
+        let response = await fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user),
+        });
+        addInformationAdmin()
+    }
+}
+
 async function editUser(editUserModalForm) {
     var user = getUserFromForm(editUserModalForm);
-    let response = await fetch('/api/users/', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(user),
-    });
+
+    var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+    var myMail = user.email;
+    var valid = re.test(myMail);
+
+    if (valid) {
+        let response = await fetch('/api/users/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user),
+        });
+    }
+
     $('#editUserModal').modal('hide') /// <<<<<
     addInformationAdmin()
 }
@@ -132,14 +157,3 @@ async function deleteUser(deleteUserModalForm) {
     addInformationAdmin()
 }
 
-async function addUser(addUserForm) {
-    var user = getUserFromForm(addUserForm);
-    let response = await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(user),
-    });
-    addInformationAdmin()
-}

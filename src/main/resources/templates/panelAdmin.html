@@ -112,17 +112,17 @@
                                         <form id="addUserForm">
                                             <div class="form-group text-center font-weight-bold">
                                                 <label>First name</label>
-                                                <input class="form-control form-control-sm" type="text" name="firstName"/>
+                                                <input class="form-control form-control-sm" type="text" name="firstName" required/>
                                                 <label>Last name</label>
-                                                <input class="form-control form-control-sm" type="text" name="lastName"/>
+                                                <input class="form-control form-control-sm" type="text" name="lastName" required/>
                                                 <label>Age</label>
-                                                <input class="form-control form-control-sm" type="number" name="age"/>
+                                                <input class="form-control form-control-sm" type="number" name="age" required/>
                                                 <label>Email</label>
-                                                <input class="form-control form-control-sm" type="email" name="email"/>
+                                                <input class="form-control form-control-sm" type="email" name="email" required/>
                                                 <label>Password</label>
-                                                <input class="form-control form-control-sm" type="password" name="password"/>
+                                                <input class="form-control form-control-sm" type="password" name="password" required/>
                                                 <label>Role</label>
-                                                <select class="form-control form-control-sm" name="roles" size="2">
+                                                <select class="form-control form-control-sm" name="roles" size="2" required>
                                                     <option th:each="role : ${roles}"
                                                             th:value="${role.name}"
                                                             th:utext="${#strings.replace(role.name, 'ROLE_', '')}"></option>
