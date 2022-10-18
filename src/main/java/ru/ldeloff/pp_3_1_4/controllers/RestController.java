@@ -1,6 +1,9 @@
 package ru.ldeloff.pp_3_1_4.controllers;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ldeloff.pp_3_1_4.models.Role;
 import ru.ldeloff.pp_3_1_4.models.User;
@@ -25,8 +28,8 @@ public class RestController {
     }
 
     @GetMapping(value = "/users")
-    public List<User> allUsers() {
-        return userService.getAllUser();
+    public ResponseEntity<List<User>> allUsers() {
+        return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
@@ -35,18 +38,18 @@ public class RestController {
     }
 
     @GetMapping("/info")
-    public User information(Principal principal) {
+    public ResponseEntity<User> information(Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("users/{id}")
-    public User informationById(@PathVariable long id) {
-        return userService.getById(id);
+    public ResponseEntity<User> informationById(@PathVariable long id) {
+        return new ResponseEntity<>(userService.getById(id),HttpStatus.OK);
     }
 
     @PutMapping("/users")
-    public User updateUser(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<User> updateUser(@RequestBody Map<String, Object> payload) {
         User user = new User(Integer.parseInt((String) payload.get("id")),
                 (String) payload.get("firstName"),
                 (String) payload.get("lastName"),
@@ -55,11 +58,11 @@ public class RestController {
         ArrayList<String> arrayList = (ArrayList<String>) payload.get("roles");
         arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
         userService.edit(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/users")
-    public User addUser(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<User> addUser(@RequestBody Map<String, Object> payload) {
         User user = new User(
                 (String) payload.get("firstName"),
                 (String) payload.get("lastName"),
@@ -68,6 +71,6 @@ public class RestController {
         ArrayList<String> arrayList = (ArrayList<String>) payload.get("roles");
         arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
         userService.add(user);
-        return user;
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 }
