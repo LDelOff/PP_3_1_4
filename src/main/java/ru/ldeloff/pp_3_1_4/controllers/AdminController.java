@@ -30,28 +30,4 @@ public class AdminController {
         model.addAttribute("userUp", new User());
         return "panelAdmin";
     }
-
-    @PostMapping(value = "/add")
-    public String add(@ModelAttribute("userUp") User user,
-                      @RequestParam(name = "roleName") String roleName) {
-        user.addRole(roleService.getByName(roleName));
-        userService.add(user);
-        return "redirect:/admin/";
-    }
-
-
-    @GetMapping(value = "/delete")
-    public String deleteUser(@RequestParam("id") long id) {
-        userService.delete(id);
-        return "redirect:/admin/";
-    }
-
-    @PostMapping(value = "/update")
-    public String updateUser(@ModelAttribute("userUp") User user,
-                             @RequestParam(name = "roleName") String roleName) {
-        user.addRole(roleService.getByName(roleName));
-        userService.edit(user);
-
-        return "redirect:/admin/";
-    }
 }
