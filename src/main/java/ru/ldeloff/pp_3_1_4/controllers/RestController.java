@@ -8,6 +8,8 @@ import ru.ldeloff.pp_3_1_4.service.RoleService;
 import ru.ldeloff.pp_3_1_4.service.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,8 @@ public class RestController {
                 (String) payload.get("lastName"),
                 Integer.parseInt((String) payload.get("age")),
                 (String) payload.get("email"), (String) payload.get("password"));
-        user.addRole(roleService.getByName((String) payload.get("roles")));
+        ArrayList<String> arrayList = (ArrayList<String>) payload.get("roles");
+        arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
         userService.edit(user);
         return user;
     }
@@ -62,7 +65,8 @@ public class RestController {
                 (String) payload.get("lastName"),
                 Integer.parseInt((String) payload.get("age")),
                 (String) payload.get("email"), (String) payload.get("password"));
-        user.addRole(roleService.getByName((String) payload.get("roles")));
+        ArrayList<String> arrayList = (ArrayList<String>) payload.get("roles");
+        arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
         userService.add(user);
         return user;
     }

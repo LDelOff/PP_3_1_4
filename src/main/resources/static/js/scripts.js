@@ -1,8 +1,17 @@
 function getUserFromForm(form) {
     var result = { };
+    var count = 0;
+    var roles = [];
     $.each($(form).serializeArray(), function() {
-        result[this.name] = this.value;
+        if (this.name === 'roles') {
+            roles[count] = this.value;
+            count++;
+        }
+        else {
+            result[this.name] = this.value;
+        }
     });
+    result.roles = roles;
     return result;
 }
 
