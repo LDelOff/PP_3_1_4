@@ -20,7 +20,7 @@ function getUserById(id) {
         async: false,
         method: "get",
         dataType: "json"
-    }).responseJSON
+    }).responseJSON;
 
     return {
         id: msg.id,
@@ -30,40 +30,40 @@ function getUserById(id) {
         email: msg.email,
         password: msg.password,
         roles: msg.roles
-    }
+    };
 }
 
 function formModalDelete(obj) {
-    var id = obj.value
-    var user = getUserById(id)
-    $('#deleteUserModalFormID').val(user.id)
-    $('#deleteUserModalFormFirstName').val(user.firstName)
-    $('#deleteUserModalFormLastName').val(user.lastName)
-    $('#deleteUserModalFormAge').val(user.age)
-    $('#deleteUserModalFormEmail').val(user.email)
-    $('#deleteUserModalFormPassword').val(user.password)
-    $('#deleteUserModal').modal('show')
+    var id = obj.value;
+    var user = getUserById(id);
+    $('#deleteUserModalFormID').val(user.id);
+    $('#deleteUserModalFormFirstName').val(user.firstName);
+    $('#deleteUserModalFormLastName').val(user.lastName);
+    $('#deleteUserModalFormAge').val(user.age);
+    $('#deleteUserModalFormEmail').val(user.email);
+    $('#deleteUserModalFormPassword').val(user.password);
+    $('#deleteUserModal').modal('show');
 }
 
 function formModalEdit(obj) {
-    var id = obj.value
-    var user = getUserById(id)
-    $('#editUserModalFormID').val(user.id)
-    $('#editUserModalFormFirstName').val(user.firstName)
-    $('#editUserModalFormLastName').val(user.lastName)
-    $('#editUserModalFormAge').val(user.age)
-    $('#editUserModalFormEmail').val(user.email)
-    $('#editUserModalFormPassword').val(user.password)
-    $('#editUserModal').modal('show')
+    var id = obj.value;
+    var user = getUserById(id);
+    $('#editUserModalFormID').val(user.id);
+    $('#editUserModalFormFirstName').val(user.firstName);
+    $('#editUserModalFormLastName').val(user.lastName);
+    $('#editUserModalFormAge').val(user.age);
+    $('#editUserModalFormEmail').val(user.email);
+    $('#editUserModalFormPassword').val(user.password);
+    $('#editUserModal').modal('show');
 }
 
 function allRoles(el) {
     var result = "";
     for (var i = 0; i < el.roles.length; i++) {
-        result = result + " "
-        result = result + el.roles[i].name.replace('ROLE_', "")
+        result = result + " ";
+        result = result + el.roles[i].name.replace('ROLE_', "");
     }
-    return result
+    return result;
 }
 
 function addInformation() {
@@ -72,7 +72,7 @@ function addInformation() {
         dataType: "json",
         success: function (msg) {
             var tbody = $("#users");
-            var tr = $("<tr></tr>").addClass("user").appendTo(tbody)
+            var tr = $("<tr></tr>").addClass("user").appendTo(tbody);
             $("<td></td>").text(msg.id).appendTo(tr);
             $("<td></td>").text(msg.firstName).appendTo(tr);
             $("<td></td>").text(msg.lastName).appendTo(tr);
@@ -90,27 +90,27 @@ function addInformationAdmin() {
         .then((data) => {
             $("#users").html('');
             data.forEach(function (el) {
-                var tbody = $('#users')
-                var tr = $('<tr></tr>').appendTo(tbody)
-                var td
-                $('<td></td>').text(el.id).appendTo(tr)
-                $('<td></td>').text(el.firstName).appendTo(tr)
-                $('<td></td>').text(el.lastName).appendTo(tr)
-                $('<td></td>').text(el.age).appendTo(tr)
-                $('<td></td>').text(el.email).appendTo(tr)
-                $('<td></td>').text(allRoles(el)).appendTo(tr)
-                td = $('<td></td>').appendTo(tr)
+                var tbody = $('#users');
+                var tr = $('<tr></tr>').appendTo(tbody);
+                var td;
+                $('<td></td>').text(el.id).appendTo(tr);
+                $('<td></td>').text(el.firstName).appendTo(tr);
+                $('<td></td>').text(el.lastName).appendTo(tr);
+                $('<td></td>').text(el.age).appendTo(tr);
+                $('<td></td>').text(el.email).appendTo(tr);
+                $('<td></td>').text(allRoles(el)).appendTo(tr);
+                td = $('<td></td>').appendTo(tr);
                 $('<button></button>').text('Edit').attr('onClick', 'formModalEdit(this)')
                     .addClass('btn btn-primary')
                     .attr('data-target', '#editModal')
                     .attr('data-toggle', 'modal')
-                    .val(el.id).appendTo(td)
-                td = $('<td></td>').appendTo(tr)
+                    .val(el.id).appendTo(td);
+                td = $('<td></td>').appendTo(tr);
                 $('<button></button>').text('Delete').appendTo(td).attr('onClick', 'formModalDelete(this)')
                     .addClass('btn btn-danger')
                     .attr('data-target', '#deleteModal')
                     .attr('data-toggle', 'modal')
-                    .val(el.id).appendTo(td)
+                    .val(el.id).appendTo(td);
             })
         });
 }
@@ -128,7 +128,7 @@ async function addUser(addUserForm) {
             },
             body: JSON.stringify(user),
         });
-        addInformationAdmin()
+        addInformationAdmin();
     }
 }
 
@@ -138,7 +138,6 @@ async function editUser(editUserModalForm) {
     var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
     var myMail = user.email;
     var valid = re.test(myMail);
-
     if (valid) {
         let response = await fetch('/api/users/', {
             method: 'PUT',
@@ -147,10 +146,9 @@ async function editUser(editUserModalForm) {
             },
             body: JSON.stringify(user),
         });
+        $('#editUserModal').modal('hide'); /// <<<<<
+        addInformationAdmin();
     }
-
-    $('#editUserModal').modal('hide') /// <<<<<
-    addInformationAdmin()
 }
 
 async function deleteUser(deleteUserModalForm) {
@@ -162,7 +160,7 @@ async function deleteUser(deleteUserModalForm) {
         },
         body: JSON.stringify(user),
     });
-    $('#deleteUserModal').modal('hide')
-    addInformationAdmin()
+    $('#deleteUserModal').modal('hide');
+    addInformationAdmin();
 }
 
