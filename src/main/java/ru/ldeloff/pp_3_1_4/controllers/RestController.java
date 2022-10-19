@@ -11,10 +11,7 @@ import ru.ldeloff.pp_3_1_4.service.RoleService;
 import ru.ldeloff.pp_3_1_4.service.UserService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
@@ -56,7 +53,11 @@ public class RestController {
                 Integer.parseInt((String) payload.get("age")),
                 (String) payload.get("email"), (String) payload.get("password"));
         ArrayList<String> arrayList = (ArrayList<String>) payload.get("roles");
-        arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
+        if (arrayList.isEmpty()) {
+            user.setRoles(userService.getRoles(user.getId()));
+        } else {
+            arrayList.forEach((role) -> user.addRole(roleService.getByName(role)));
+        }
         userService.edit(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
