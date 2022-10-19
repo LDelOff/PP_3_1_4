@@ -42,7 +42,7 @@ function formModalDelete(obj) {
     $('#deleteUserModalFormAge').val(user.age);
     $('#deleteUserModalFormEmail').val(user.email);
     $('#deleteUserModalFormPassword').val(user.password);
-    $('#deleteUserModal').modal('show');
+    $('#deleteUserModal').modal('toggle');
 }
 
 function formModalEdit(obj) {
@@ -54,7 +54,7 @@ function formModalEdit(obj) {
     $('#editUserModalFormAge').val(user.age);
     $('#editUserModalFormEmail').val(user.email);
     $('#editUserModalFormPassword').val(user.password);
-    $('#editUserModal').modal('show');
+    $('#editUserModal').modal('toggle');
 }
 
 function allRoles(el) {
@@ -115,13 +115,14 @@ function addInformationAdmin() {
         });
 }
 
-async function addUser(addUserForm) {
+addUserForm.onsubmit = async (e) => {
+    e.preventDefault();
     var user = getUserFromForm(addUserForm);
     var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
     var myMail = user.email;
     var valid = re.test(myMail);
     if (valid) {
-        let response = await fetch('/api/users', {
+        let response = await fetch('/api/users/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -129,12 +130,19 @@ async function addUser(addUserForm) {
             body: JSON.stringify(user),
         });
         addInformationAdmin();
+        $('#nav-profile-tab').removeClass("active");
+        $('#nav-profile').removeClass("active");
+        $('#nav-profile').removeClass("show");
+        $('#nav-home-tab').addClass("active");
+        $('#nav-home').addClass("active");
+        $('#nav-home').addClass("show");
     }
-}
 
-async function editUser(editUserModalForm) {
+};
+
+editUserModalForm.onsubmit = async (e) => {
+    e.preventDefault();
     var user = getUserFromForm(editUserModalForm);
-
     var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
     var myMail = user.email;
     var valid = re.test(myMail);
@@ -146,12 +154,13 @@ async function editUser(editUserModalForm) {
             },
             body: JSON.stringify(user),
         });
-        $('#editUserModal').modal('hide'); /// <<<<<
+        $('#editUserModal').modal('hide')
         addInformationAdmin();
     }
-}
+};
 
-async function deleteUser(deleteUserModalForm) {
+deleteUserModalForm.onsubmit = async (e) => {
+    e.preventDefault();
     var user = getUserFromForm(deleteUserModalForm);
     let response = await fetch('/api/users/' + user.id, {
         method: 'DELETE',
@@ -160,7 +169,8 @@ async function deleteUser(deleteUserModalForm) {
         },
         body: JSON.stringify(user),
     });
-    $('#deleteUserModal').modal('hide');
-    addInformationAdmin();
-}
+    $('#deleteUserModal').modal('hide')
+    addInformationAdmin()
+};
+
 
